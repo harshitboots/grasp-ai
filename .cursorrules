@@ -1,0 +1,27 @@
+You are helping build Grasp — an AI learning agent.
+
+Product: Upload any document, image, YouTube video or URL.
+Get instant summary then chat with AI tutor about it.
+Modes: Summary, Q&A, Teaching, Flashcards.
+Pricing: Free (3 uploads) / Pro £5/month unlimited.
+
+Stack:
+- Mobile: Expo / React Native
+- Backend: FastAPI (Python)
+- LLM Router: Claude (teaching) + GPT-4o (summary/QA) + Gemini (flashcards/images)
+- Embeddings: Azure OpenAI text-embedding-3-small
+- Vector Store: Databricks Vector Search
+- Storage: Azure Blob Storage
+- Database: Azure SQL
+- Auth: Google OAuth
+- Payments: Stripe £5/month
+- Hosting: Azure Container Apps
+- CI/CD: GitHub Actions
+
+Rules:
+- Always write complete files never partial
+- All secrets via environment variables
+- Every function needs a docstring
+- Modular structure always
+- When fixing bugs explain why it broke
+- Mobile first always
