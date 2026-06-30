@@ -4,19 +4,19 @@
 ---
 
 ## What is Grasp?
-AI learning agent built by Harshit Tripathi under Britcore AI.
+AI learning agent built by Harshit Tripathi.
 Users upload any document, image, YouTube video or URL.
 They get instant summary then chat with AI tutor about it.
 
 **Tagline:** "Upload anything. Grasp everything."
-**Goal:** Public product, Britcore AI portfolio
+**Goal:** Public product
 **Status:** Step 0 complete — moving to Step 1
 
 ---
 
 ## Owner
 - **Name:** Harshit Tripathi
-- **Company:** Britcore AI
+- **Company:** —
 
 ---
 
@@ -77,18 +77,18 @@ Upload → Auto summary loads immediately
 
 ---
 
-## Databricks — Britcore Workspace
+## Databricks
 ```
-Catalog:        britcore_catalog
+Catalog:        grasp_catalog
 Schema:         grasp_poc
 Secret scope:   grasp-secrets
 ```
 
 ### Delta Tables
 ```
-britcore_catalog.grasp_poc.documents     — raw chunks
-britcore_catalog.grasp_poc.embeddings    — vectors
-britcore_catalog.grasp_poc.sessions      — user sessions
+grasp_catalog.grasp_poc.documents     — raw chunks
+grasp_catalog.grasp_poc.embeddings    — vectors
+grasp_catalog.grasp_poc.sessions      — user sessions
 ```
 
 ### Notebooks

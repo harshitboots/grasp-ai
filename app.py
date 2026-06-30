@@ -9,7 +9,7 @@ from agent.modes import summary, analysis
 load_dotenv()
 
 st.set_page_config(
-    page_title="Grasp — Britcore AI",
+    page_title="Grasp",
     page_icon="🧠",
     layout="centered",
 )
@@ -35,7 +35,7 @@ def _cost_badge(gbp: float) -> str:
 
 with st.sidebar:
     st.title("🧠 Grasp")
-    st.caption("Britcore AI — Upload anything. Understand everything.")
+    st.caption("Upload anything. Understand everything.")
     st.divider()
 
     st.subheader("API Keys")
@@ -44,7 +44,7 @@ with st.sidebar:
     sb_openai = st.text_input("OpenAI (Whisper)", type="password", placeholder="sk-...")
     st.caption("Keys live in your browser session only — never saved.")
     st.divider()
-    st.markdown("[GitHub](https://github.com/harshitboots/grasp-ai) · MIT Licence")
+    st.markdown("[GitHub](https://github.com/harshitboots/grasp-ai) · MIT")
 
 
 anthropic_key = _get_key("ANTHROPIC_API_KEY", sb_anthropic)
