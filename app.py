@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 from agent.router import detect
 from agent.parsers import web_parser, youtube_parser, pdf_parser, image_parser, audio_parser
-from agent.modes import summary, analysis
+from agent.modes import summary, analysis, qa, flashcards
 
 load_dotenv()
 
@@ -222,3 +222,81 @@ if content:
                     f"Tokens: {a['input_tokens']:,} in / {a['output_tokens']:,} out · "
                     f"Cost: **{_cost_badge(a['cost_gbp'])}**"
                 )
+
+        st.divider()
+
+        # ── qa ────────────────────────────────────────────────────────────────
+        st.markdown("#### 💬 Ask About This")
+        if not anthropic_key:
+            st.info("Add your Anthropic API key to chat with this content.")
+        else:
+            if st.session_state.get("qa_content_id") != id(content):
+                st.session_state["qa_history"] = []
+                st.session_state.pop("qa_last_result", None)
+                st.session_state["qa_content_id"] = id(content)
+
+            for msg in st.session_state.get("qa_history", []):
+                with st.chat_message(msg["role"]):
+                    st.markdown(msg["content"])
+
+            question = st.chat_input("Ask a question about this content...")
+            if question:
+                st.session_state["qa_history"].append({"role": "user", "content": question})
+                with st.spinner("Thinking..."):
+                    try:
+                        qa_result = qa.run(
+                            content,
+                            question,
+                            history=st.session_state["qa_history"][:-1],
+                            anthropic_key=anthropic_key,
+                        )
+                        st.session_state["qa_history"].append(
+                            {"role": "assistant", "content": qa_result["output"]}
+                        )
+                        st.session_state["qa_last_result"] = qa_result
+                    except Exception as e:
+                        st.session_state["qa_history"].pop()
+                        st.error(f"Couldn't answer that: {e}")
+                st.rerun()
+
+            if "qa_last_result" in st.session_state:
+                q = st.session_state["qa_last_result"]
+                st.caption(
+                    f"Model: **{q['model']}** · "
+                    f"Tokens: {q['input_tokens']:,} in / {q['output_tokens']:,} out · "
+                    f"Cost: **{_cost_badge(q['cost_gbp'])}**"
+                )
+
+        st.divider()
+
+        # ── flashcards ────────────────────────────────────────────────────────
+        st.markdown("#### 🗂️ Flashcards")
+        if not gemini_key:
+            st.info("Add your Gemini API key to generate flashcards.")
+        else:
+            if st.session_state.get("flashcards_content_id") != id(content):
+                st.session_state.pop("flashcards_result", None)
+
+            if st.button("Generate Flashcards", key="btn_flashcards"):
+                with st.spinner("Generating flashcards with Gemini..."):
+                    try:
+                        f_result = flashcards.run(content, gemini_key=gemini_key)
+                        st.session_state["flashcards_result"] = f_result
+                        st.session_state["flashcards_content_id"] = id(content)
+                    except Exception as e:
+                        st.error(f"Flashcards failed: {e}")
+
+            if "flashcards_result" in st.session_state:
+                f = st.session_state["flashcards_result"]
+                cards = f.get("cards", [])
+                if not cards:
+                    st.warning("Couldn't parse flashcards from the model response.")
+                else:
+                    for i, card in enumerate(cards, 1):
+                        with st.expander(f"Card {i}: {card.get('question', '')}"):
+                            st.markdown(card.get("answer", ""))
+                    st.caption(
+                        f"Model: **{f['model']}** · "
+                        f"Tokens: {f['input_tokens']:,} in / {f['output_tokens']:,} out · "
+                        f"Cost: **{_cost_badge(f['cost_gbp'])}**"
+                    )

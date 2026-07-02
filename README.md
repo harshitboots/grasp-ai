@@ -115,9 +115,9 @@ Open [http://localhost:8501](http://localhost:8501)
 |------|------------------|-------|
 | **Summary** | TL;DR + key bullet points in plain English | Routed (Flash / Haiku) |
 | **Analysis** | Findings, risks, action items, key data | Claude Sonnet |
-| **Q&A** *(coming soon)* | Chat with the content, sources shown | Claude Haiku |
+| **Q&A** | Chat with the content, full history kept in context | Claude Haiku |
+| **Flashcards** | Revision cards generated from the content | Gemini Flash |
 | **Teaching** *(coming soon)* | AI tutor that asks you questions and gives feedback | Claude Sonnet |
-| **Flashcards** *(coming soon)* | Revision cards generated from the content | Gemini Flash |
 
 ---
 
@@ -259,9 +259,9 @@ grasp-ai/
 - [x] Summary mode
 - [x] Deep analysis mode
 - [x] Multi-model router (Flash / Haiku / Sonnet)
-- [ ] Q&A mode — chat with any content
+- [x] Q&A mode — chat with any content
+- [x] Flashcards mode — revision cards from any content
 - [ ] Teaching mode — Socratic AI tutor
-- [ ] Flashcards mode — revision cards from any content
 - [ ] Google OAuth + usage tracking
 - [ ] Free tier (3 uploads/month) + Pro (£5/month)
 - [ ] Streamlit Cloud deployment
@@ -309,8 +309,8 @@ git push origin feature/your-feature
 
 Good first contributions:
 - **New parser** — Word docs, PowerPoint, audio from URLs
-- **Q&A mode** — `agent/modes/qa.py` using vector search
-- **Flashcards mode** — `agent/modes/flashcards.py`
+- **Teaching mode** — `agent/modes/teaching.py`, Socratic-style prompting on top of Claude Sonnet
+- **Vector search for Q&A** — swap the in-context approach in `agent/modes/qa.py` for chunking + retrieval once documents get long
 - **New connector** — Notion, Google Drive, Confluence
 
 ---
